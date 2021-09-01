@@ -36,7 +36,6 @@ class App extends React.Component {
 
     window.navigator.geolocation.getCurrentPosition(
       (position) => {
-
         // Call setState to update the state information. functions should not
         // be found in the render() portion of the class.
         this.setState({ lat: position.coords.latitude });
@@ -44,20 +43,29 @@ class App extends React.Component {
       (err) => {
         this.setState({ errorMessage: err.message });
       }
+
     );
   }
 
   //Class based components MUST define render
   render() {
-    return (
-      <div>
-        Latitude: {this.state.lat} 
-        <br />
-        Error: {this.state.errorMessage}
-      </div>
-    );
+    if (this.state.errorMessage && !this.state.lat) {
+      return <div>Error: {this.state.errorMessage} </div>
+    }
+    if (this.state.lat && !this.state.errorMessage) {
+      return <div> Latitude: {this.state.lat} </div>
+    }
+    return <div>Loading...</div>
   }
+  //return (
+  //  <div>
+  //    Latitude: {this.state.lat} 
+  //    <br />
+  //    Error: {this.state.errorMessage}
+  //  </div>
+  //);
 }
+
 
 
 ReactDOM.render(<App />, document.querySelector('#root'));
