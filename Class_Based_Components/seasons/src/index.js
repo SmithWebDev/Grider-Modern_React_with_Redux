@@ -32,7 +32,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { lat: null };
+    this.state = { lat: null, errorMessage: '' };
 
     window.navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -41,13 +41,21 @@ class App extends React.Component {
         // be found in the render() portion of the class.
         this.setState({ lat: position.coords.latitude });
       },
-      (err) => console.log(err)
+      (err) => {
+        this.setState({ errorMessage: err.message });
+      }
     );
   }
 
   //Class based components MUST define render
   render() {
-    return <div>Latitude: {this.state.lat} </div>;
+    return (
+      <div>
+        Latitude: {this.state.lat} 
+        <br />
+        Error: {this.state.errorMessage}
+      </div>
+    );
   }
 }
 
